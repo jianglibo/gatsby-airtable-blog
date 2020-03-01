@@ -1,0 +1,125 @@
+
+import "katex/dist/katex.min.css"
+
+# Hello, world!
+
+Lift($L$) can be determined by Lift Coefficient ($C_L$) like the following equation.
+$$
+L = \frac{1}{2} \rho v^2 S C_L
+$$
+
+<div class="math math-display">
+  L = \frac{1}{2} \rho v^2 S C_L
+</div>
+
+<p style="font-size: 80px;">abc</p>
+
+`var i = 5`
+
+> Alpha bravo charlie.
+
+`createFilePath`https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-source-filesystem
+
+`gatsby-plugin-page-creator` https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-page-creator
+```js
+// gatsby-config.js
+
+module.exports = {
+  plugins: [
+    // You can have multiple instances of this plugin
+    // to create pages from React components in different directories.
+    //
+    // The following sets up the pattern of having multiple
+    // "pages" directories in your project
+    {
+      resolve: `gatsby-plugin-page-creator`,
+      options: {
+        path: `${__dirname}/src/account/pages`,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-page-creator`,
+      options: {
+        path: `${__dirname}/src/settings/pages`,
+      },
+    },
+  ],
+}
+```
+
+This plugin will iterate over the directories the options specified, generate all page underneath.
+
+<Ppy6/>
+
+Generate slugs:
+```js
+const { createFilePath } = require("gatsby-source-filesystem")
+
+exports.onCreateNode = ({ node, actions, getNode }) => {
+  const { createNodeField } = actions
+
+  // you only want to operate on `Mdx` nodes. If you had content from a
+  // remote CMS you could also check to see if the parent node was a
+  // `File` node here
+  if (node.internal.type === "Mdx") {
+    const value = createFilePath({ node, getNode })
+
+    createNodeField({
+      // Name of the field you are adding
+      name: "slug",
+      // Individual MDX node
+      node,
+      // Generated value based on filepath with "blog" prefix. you
+      // don't need a separating "/" before the value because
+      // createFilePath returns a path with the leading "/".
+      value: `/blog${value}`,
+    })
+  }
+}
+```
+
+Create Page:
+```js
+const path = require("path")
+
+exports.createPages = async ({ graphql, actions, reporter }) => {
+  // Destructure the createPage function from the actions object
+  const { createPage } = actions
+
+  const result = await graphql(`
+    query {
+      allMdx {
+        edges {
+          node {
+            id
+            fields {
+              slug
+            }
+          }
+        }
+      }
+    }
+  `)
+
+  if (result.errors) {
+    reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query')
+  }
+
+  // Create blog post pages.
+  const posts = result.data.allMdx.edges
+
+  // you'll call `createPage` for each result
+  posts.forEach(({ node }, index) => {
+    createPage({
+      // This is the slug you created before
+      // (or `node.frontmatter.slug`)
+      path: node.fields.slug,
+      // This component will wrap our MDX content
+      component: path.resolve(`./src/components/posts-page-layout.js`),
+      // You can use the values in this context in
+      // our page layout component
+      context: { id: node.id },
+    })
+  })
+}
+```
