@@ -144,6 +144,11 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       node,
       value: airtable.data.layout,
     })
+    createNodeField({
+      name: "position",
+      node,
+      value: airtable.data.position,
+    })
   }
 }
 

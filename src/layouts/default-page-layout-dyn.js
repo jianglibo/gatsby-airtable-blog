@@ -31,16 +31,6 @@ const shortcodes = { Link, Ppy6 }
 const BlockQuote = ({children}) => <blockquote className="border-l-4 border-purple-500 italic my-8 pl-8 md:pl-12">{children}</blockquote>
 
 const Layout = ({ children }) => {
-//   const data = useStaticQuery(graphql`
-//     query SiteTitleQueryDefault {
-//       site {
-//         siteMetadata {
-//           title
-//         }
-//       }
-//     }
-//   `)
-  
    return (
       <div>
          <Header />
@@ -91,15 +81,25 @@ export default ({ data: { mdx } }) => (
  )
 
 export const pageQuery = graphql`
-  query BlogPostQuery($id: String) {
-    mdx(id: { eq: $id }) {
-      id
-      body
-      frontmatter {
-        title
+query GetOneBlog($id: String) {
+  mdx(id: {eq: $id}) {
+    body
+    parent {
+      parent {
+        ... on Airtable {
+          id
+          data {
+            title
+            position
+            pagename
+            layout
+            excerpt
+          }
+        }
       }
     }
   }
+}
 `
 
 // https://www.gatsbyjs.org/docs/mdx/importing-and-using-components/
