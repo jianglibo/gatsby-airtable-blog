@@ -6,7 +6,7 @@
 
 // You can delete this file if you're not using it
 
-const { createFilePath } = require("gatsby-source-filesystem")
+// const { createFilePath } = require("gatsby-source-filesystem")
 const fs = require("fs")
 
 // query MyQuery {
@@ -208,7 +208,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const posts = result.data.allMdx.edges
 
   // you'll call `createPage` for each result
-  posts.forEach(({ node }, index) => {
+  posts.forEach(({ node }, __index) => {
     if (!(node.fields && node.fields.slug)) {
       return
     }

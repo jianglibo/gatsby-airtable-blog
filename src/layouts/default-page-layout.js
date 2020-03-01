@@ -25,7 +25,7 @@ const Ppy6 = () => <p className="py-6">
 
 const shortcodes = { Link, Ppy6 }
 const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
+  const __data = useStaticQuery(graphql`
     query SiteTitleQueryDefault {
       site {
         siteMetadata {
