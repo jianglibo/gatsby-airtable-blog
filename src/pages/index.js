@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import Layout from "../layouts/default-page-layout-dyn"
+import { Layout, shortcodes, BlockQuote } from "../layouts/layout";
 import { graphql } from 'gatsby'
+import { MDXProvider } from "@mdx-js/react";
+import { MDXRenderer } from "gatsby-plugin-mdx";
 
-const IndexPage = () => (<Layout>
-   <h1>Hi people</h1>
-   <p>Welcome to your new Gatsby site.</p>
-   <p>Now go build something great.</p>
- </Layout>)
+export default ({ data }) => {
+  const nd = data.allMdx.edges[0].node
+  return <MDXProvider components={(shortcodes, { blockquote: BlockQuote })}>
+    <Layout title={nd.parent.parent.data.title}>
+      <MDXRenderer>{nd.body}</MDXRenderer>
+    </Layout>
+  </MDXProvider>
+}
+
 
 
 export const query = graphql`
@@ -42,4 +48,4 @@ query GetLatestBlog {
 `
  
 
-export default IndexPage
+// export default IndexPage

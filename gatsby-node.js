@@ -103,8 +103,8 @@ const printAirtable = (node, actions, getNode) => {
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
 
-  printImageSharp(node, actions, getNode)
-  printAirtable(node, actions, getNode)
+  // printImageSharp(node, actions, getNode)
+  // printAirtable(node, actions, getNode)
 
   // you only want to operate on `Mdx` nodes. If you had content from a
   // remote CMS you could also check to see if the parent node was a
@@ -116,14 +116,18 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       return
     }
 
-    const airtable = getNode(airtableField.parent)
+    const airtableRow = getNode(airtableField.parent)
 
-    if (!["gatsby"].includes(airtable.table)) {
+    if (!["gatsby"].includes(airtableRow.table)) {
       return
     }
 
-    const value = airtable.data.pagename
+    const value = airtableRow.data.pagename
+    // console.log(airtableRow.data)
 
+    const attachments = airtableRow.data.attachments___NODE ? getNode(airtableRow.data.attachments___NODE).raw : []
+
+    // console.log(attachments)
     createNodeField({
       // Name of the field you are adding
       name: "slug",
@@ -132,22 +136,27 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       // Generated value based on filepath with "blog" prefix. you
       // don't need a separating "/" before the value because
       // createFilePath returns a path with the leading "/".
-      value: `/${airtable.table}/${value}`,
+      value: `/${airtableRow.table}/${value}`,
     })
     createNodeField({
       name: "recordId",
       node,
-      value: airtable.recordId,
+      value: airtableRow.recordId,
     })
     createNodeField({
       name: "layout",
       node,
-      value: airtable.data.layout,
+      value: airtableRow.data.layout,
     })
     createNodeField({
       name: "position",
       node,
-      value: airtable.data.position,
+      value: airtableRow.data.position,
+    })
+    createNodeField({
+      name: "attachments",
+      node,
+      value: attachments,
     })
   }
 }
@@ -202,6 +211,9 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
           }
         }
       }
+      allAirtable {
+        distinct(field: data___group)
+      }
     }
   `)
 
@@ -235,4 +247,17 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       context: { id: node.id },
     })
   })
+
+  const groups = result.data.allAirtable.distinct
+  console.log(`groups: ${groups}`)
+
+  groups.forEach((groupname, __index) => {
+    console.log(`groupname: ${groupname}`)
+    createPage({
+      path: `/${groupname}`,
+      component: path.resolve(`./src/layouts/list-page-layout-dyn.js`),
+      context: { groupname: groupname },
+    })
+  })
+  
 }

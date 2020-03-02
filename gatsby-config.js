@@ -71,7 +71,8 @@ module.exports = {
         tables: [
           {
             baseId: process.env.AIRTABLE_BASE,
-            tableName: process.env.AIRTABLE_TABLE_GATSBY,
+            tableName: 'gatsby',
+            tableView: 'groupview',
             mapping: { "content": `text/markdown`, "attachments": `fileNode` },
           },
         ]
