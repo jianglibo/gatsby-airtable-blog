@@ -127,7 +127,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
 
     const attachments = airtableRow.data.attachments___NODE ? getNode(airtableRow.data.attachments___NODE).raw : []
 
-    // console.log(attachments)
+    console.log(attachments)
     createNodeField({
       // Name of the field you are adding
       name: "slug",
@@ -199,7 +199,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   const result = await graphql(`
     query {
-      allMdx {
+      allMdx(filter: {fields: {recordId: {regex: "/.+/"}}}) {
         edges {
           node {
             id
@@ -236,6 +236,10 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         ? comp
         : path.resolve(`./src/layouts/default-page-layout-dyn.js`)
 
+    const attachment_urls = node.fields.attachments ? node.fields.attachments.map((a) => {
+      return a.url
+    }) : []
+
     createPage({
       // This is the slug you created before
       // (or `node.frontmatter.slug`)
@@ -244,7 +248,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       component: comp,
       // You can use the values in this context in
       // our page layout component
-      context: { id: node.id },
+      context: { id: node.id, attachment_urls: attachment_urls},
     })
   })
 
