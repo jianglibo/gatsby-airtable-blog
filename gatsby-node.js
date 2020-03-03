@@ -360,7 +360,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   // graphqlTracer(graphql, actions, reporter)
 
   // Destructure the createPage function from the actions object
-  // await createAirtablePages(graphql, actions, reporter)
+  await createAirtablePages(graphql, actions, reporter)
 
   await createFileMdxPages(graphql, actions, reporter)
 }
