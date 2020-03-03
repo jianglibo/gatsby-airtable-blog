@@ -39,20 +39,6 @@ module.exports = {
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
-    // { we use mdx instead.
-    //   resolve: `gatsby-transformer-remark`,
-    //   options: {
-    //     plugins: [
-    //       {
-    //         resolve: `gatsby-remark-katex`,
-    //         options: {
-    //           // Add any KaTeX options from https://github.com/KaTeX/KaTeX/blob/master/docs/options.md here
-    //           strict: `ignore`
-    //         }
-    //       }
-    //     ],
-    //   },
-    // },
     `gatsby-plugin-emotion`,
     {
       resolve: `gatsby-plugin-typography`,
@@ -76,7 +62,6 @@ module.exports = {
             mapping: { "content": `text/markdown`, "attachments": `fileNode` },
           },
         ]
-        //...etc
       }
     },
     {

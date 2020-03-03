@@ -100,9 +100,81 @@ const printAirtable = (node, actions, getNode) => {
   }
 }
 
-exports.onCreateNode = ({ node, actions, getNode }) => {
+const createAirtableNode = (airtableField, node, actions, getNode) => {
   const { createNodeField } = actions
+  const airtableRow = getNode(airtableField.parent)
 
+  if (!["gatsby"].includes(airtableRow.table)) {
+    return
+  }
+
+  const value = airtableRow.data.pagename
+  // console.log(airtableRow.data)
+
+  const attachments = airtableRow.data.attachments___NODE
+    ? getNode(airtableRow.data.attachments___NODE).raw
+    : []
+
+  // console.log(attachments)
+  // {
+  //   id: 'attc3fVjZ3qBXEmbf',
+  //   url: 'https://dl.airtable.com/.attachments/b6595c0570600a6a16296229b72d08b1/5abe94cb/Annotation2020-03-01112929.png',
+  //   filename: '1.png',
+  //   size: 49544,
+  //   type: 'image/png',
+  //   thumbnails: { small: [Object], large: [Object], full: [Object] }
+  // },
+
+  createNodeField({
+    // Name of the field you are adding
+    name: "slug",
+    // Individual MDX node
+    node,
+    // Generated value based on filepath with "blog" prefix. you
+    // don't need a separating "/" before the value because
+    // createFilePath returns a path with the leading "/".
+    value: `/${airtableRow.table}/${value}`,
+  })
+  createNodeField({
+    name: "recordId",
+    node,
+    value: airtableRow.recordId,
+  })
+  createNodeField({
+    name: "layout",
+    node,
+    value: airtableRow.data.layout,
+  })
+  createNodeField({
+    name: "position",
+    node,
+    value: airtableRow.data.position,
+  })
+  createNodeField({
+    name: "attachments",
+    node,
+    value: attachments,
+  })
+}
+
+const { createFilePath } = require("gatsby-source-filesystem")
+
+const createFileMdxNode = (node, actions, getNode) => {
+  const { createNodeField } = actions
+  const value = createFilePath({ node, getNode })
+  createNodeField({
+    // Name of the field you are adding
+    name: "slug",
+    // Individual MDX node
+    node,
+    // Generated value based on filepath with "blog" prefix. you
+    // don't need a separating "/" before the value because
+    // createFilePath returns a path with the leading "/".
+    value: `/blog${value}`,
+  })
+}
+
+exports.onCreateNode = ({ node, actions, getNode }) => {
   // printImageSharp(node, actions, getNode)
   // printAirtable(node, actions, getNode)
 
@@ -111,57 +183,13 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   // `File` node here
   if (node.internal.type === "Mdx") {
     const airtableField = getNode(node.parent)
-
-    if (airtableField.internal.type !== "AirtableField") {
-      return
+    if (airtableField.internal.type === "AirtableField") {
+      createAirtableNode(airtableField, node, actions, getNode)
+    } else {
+      createFileMdxNode(node, actions, getNode)
     }
-
-    const airtableRow = getNode(airtableField.parent)
-
-    if (!["gatsby"].includes(airtableRow.table)) {
-      return
-    }
-
-    const value = airtableRow.data.pagename
-    // console.log(airtableRow.data)
-
-    const attachments = airtableRow.data.attachments___NODE ? getNode(airtableRow.data.attachments___NODE).raw : []
-
-    console.log(attachments)
-    createNodeField({
-      // Name of the field you are adding
-      name: "slug",
-      // Individual MDX node
-      node,
-      // Generated value based on filepath with "blog" prefix. you
-      // don't need a separating "/" before the value because
-      // createFilePath returns a path with the leading "/".
-      value: `/${airtableRow.table}/${value}`,
-    })
-    createNodeField({
-      name: "recordId",
-      node,
-      value: airtableRow.recordId,
-    })
-    createNodeField({
-      name: "layout",
-      node,
-      value: airtableRow.data.layout,
-    })
-    createNodeField({
-      name: "position",
-      node,
-      value: airtableRow.data.position,
-    })
-    createNodeField({
-      name: "attachments",
-      node,
-      value: attachments,
-    })
   }
 }
-
-const path = require("path")
 
 // const graphqlTracer = async (graphql, actions, reporter) => {
 //   const result = await graphql(`
@@ -191,22 +219,28 @@ const path = require("path")
 //   })
 // }
 
-exports.createPages = async ({ graphql, actions, reporter }) => {
-  // graphqlTracer(graphql, actions, reporter)
-
-  // Destructure the createPage function from the actions object
+const createAirtablePages = async (graphql, actions, reporter) => {
   const { createPage } = actions
 
+  const path = require("path")
   const result = await graphql(`
     query {
-      allMdx(filter: {fields: {recordId: {regex: "/.+/"}}}) {
+      allMdx(filter: { fields: { recordId: { regex: "/.+/" } } }) {
         edges {
           node {
             id
             fields {
-              slug
+              attachments {
+                filename
+                id
+                size
+                type
+                url
+              }
               layout
+              position
               recordId
+              slug
             }
           }
         }
@@ -236,9 +270,13 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         ? comp
         : path.resolve(`./src/layouts/default-page-layout-dyn.js`)
 
-    const attachment_urls = node.fields.attachments ? node.fields.attachments.map((a) => {
-      return a.url
-    }) : []
+    const attachment_urls = node.fields.attachments
+      ? node.fields.attachments.map(a => {
+          return a.url
+        })
+      : []
+
+    console.log(`attachment_urls: ${attachment_urls}`)
 
     createPage({
       // This is the slug you created before
@@ -248,7 +286,11 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       component: comp,
       // You can use the values in this context in
       // our page layout component
-      context: { id: node.id, attachment_urls: attachment_urls},
+      context: {
+        id: node.id,
+        attachment_urls: attachment_urls,
+        attachments: node.fields.attachments,
+      },
     })
   })
 
@@ -263,5 +305,62 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       context: { groupname: groupname },
     })
   })
-  
+}
+
+const createFileMdxPages = async (graphql, actions, reporter) => {
+  const { createPage } = actions
+
+  const path = require("path")
+  const result = await graphql(`
+    query {
+      allMdx(filter: {}) {
+        edges {
+          node {
+            id
+            fields {
+              # Slug field created in the last section
+              slug
+            }
+          }
+        }
+      }
+    }
+  `)
+
+  if (result.errors) {
+    reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query')
+  }
+
+  // Create blog post pages.
+  const posts = result.data.allMdx.edges.filter(({ node: {fields: {recordId}}}) => {
+    return !recordId
+  })
+
+  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+  console.log(posts)
+
+  // you'll call `createPage` for each result
+  posts.forEach(({ node }, __index) => {
+    createPage({
+      // This is the slug you created before
+      // (or `node.frontmatter.slug`)
+      path: node.fields.slug,
+      // This component will wrap our MDX content
+      component: path.resolve(`./src/layouts/file-mdx-layout.js`),
+      // You can use the values in this context in
+      // our page layout component
+      context: {
+        id: node.id,
+      },
+    })
+  })
+}
+
+exports.createPages = async ({ graphql, actions, reporter }) => {
+  // graphqlTracer(graphql, actions, reporter)
+
+  // Destructure the createPage function from the actions object
+  // await createAirtablePages(graphql, actions, reporter)
+
+  await createFileMdxPages(graphql, actions, reporter)
 }

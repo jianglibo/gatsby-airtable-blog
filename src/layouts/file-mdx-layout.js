@@ -2,59 +2,21 @@ import { graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Layout, shortcodes, BlockQuote } from "./layout"
-import NonStretchedImg from "../components/non-stretched-img"
 
 export default ({ data, pageContext }) => {
-  const row_data = data.mdx.parent.parent.data
-  const image_nodes = data.allFile.edges
   return (
     <MDXProvider components={(shortcodes, { blockquote: BlockQuote })}>
-      <Layout title={row_data.title} backlinkto={`/${row_data.group}`}>
+      <Layout>
         <MDXRenderer>{data.mdx.body}</MDXRenderer>
-        {image_nodes.map((nd, index) => (
-          <NonStretchedImg
-            fluid={nd.node.childImageSharp.fluid}
-            alt="Gatsby Docs are awesome"
-            key={index}
-          />
-        ))}
       </Layout>
     </MDXProvider>
   )
 }
 
 export const pageQuery = graphql`
-  query GetOneBlog($id: String, $attachment_urls: [String]) {
+  query GetOneFileMdx($id: String) {
     mdx(id: { eq: $id }) {
       body
-      parent {
-        parent {
-          ... on Airtable {
-            id
-            data {
-              title
-              position
-              pagename
-              group
-              layout
-              excerpt
-            }
-          }
-        }
-      }
-    }
-    allFile(filter: { url: { in: $attachment_urls } }) {
-      edges {
-        node {
-          childImageSharp {
-            fluid(maxWidth: 800) {
-              ...GatsbyImageSharpFluid
-              presentationWidth
-            }
-          }
-          url
-        }
-      }
     }
   }
 `
