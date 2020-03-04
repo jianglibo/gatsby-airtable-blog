@@ -14,6 +14,7 @@ import Footer from "../components/footer"
 import BackLink from "../components/back-link"
 import Usefull from "../components/usefull"
 import Menu from "../components/menu"
+import AirtableImg from "../components/airtable-img"
 
 import "./layout.css"
 
@@ -32,7 +33,7 @@ const Ppy6 = () => (
   </p>
 )
 
-const shortcodes = { Link, Ppy6 }
+const shortcodes = { Link, Ppy6, AirtableImg }
 
 // https://www.gatsbyjs.org/docs/mdx/customizing-components/
 const BlockQuote = ({ children }) => (

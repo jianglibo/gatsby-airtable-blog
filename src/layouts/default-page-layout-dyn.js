@@ -2,22 +2,15 @@ import { graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Layout, shortcodes, BlockQuote } from "./layout"
-import NonStretchedImg from "../components/non-stretched-img"
+
 
 export default ({ data, pageContext }) => {
-  const row_data = data.mdx.parent.parent.data
-  const image_nodes = data.allFile.edges
+  const rowData = data.mdx.parent.parent.data
+  const imageNodes = data.allFile.edges
   return (
     <MDXProvider components={(shortcodes, { blockquote: BlockQuote })}>
-      <Layout title={row_data.title} backlinkto={`/${row_data.group}`}>
-        <MDXRenderer>{data.mdx.body}</MDXRenderer>
-        {image_nodes.map((nd, index) => (
-          <NonStretchedImg
-            fluid={nd.node.childImageSharp.fluid}
-            alt="Gatsby Docs are awesome"
-            key={index}
-          />
-        ))}
+      <Layout title={rowData.title} backlinkto={`/${rowData.group}`}>
+        <MDXRenderer attachments={attachments} imageNodes={imageNodes}>{data.mdx.body}</MDXRenderer>
       </Layout>
     </MDXProvider>
   )

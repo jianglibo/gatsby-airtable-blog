@@ -115,15 +115,7 @@ const createAirtableNode = (airtableField, node, actions, getNode) => {
     ? getNode(airtableRow.data.attachments___NODE).raw
     : []
 
-  // console.log(attachments)
-  // {
-  //   id: 'attc3fVjZ3qBXEmbf',
-  //   url: 'https://dl.airtable.com/.attachments/b6595c0570600a6a16296229b72d08b1/5abe94cb/Annotation2020-03-01112929.png',
-  //   filename: '1.png',
-  //   size: 49544,
-  //   type: 'image/png',
-  //   thumbnails: { small: [Object], large: [Object], full: [Object] }
-  // },
+
 
   createNodeField({
     // Name of the field you are adding
