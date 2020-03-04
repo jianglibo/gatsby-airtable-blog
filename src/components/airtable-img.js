@@ -27,17 +27,13 @@ import NonStretchedImg  from "./non-stretched-img"
 export default props => {
     const {attachments, imageNodes, filename, ...normalizedProps} = props
     
-    const attachment = attachments.find(a => {
-      a.filename === filename
-    })
+    const attachment = attachments.find(a => a.filename === filename)
 
     if (!attachment) {
       return <p>Can't find {filename} in the attachments</p>
     }
 
-    const imageNode = imageNodes.find(nd => {
-      nd.node.url === attachment.url
-    })
+    const imageNode = imageNodes.find(nd => nd.node.url === attachment.url)
     
     if (!imageNode) {
       return <p>Can't find {attachment.url} in the imageNodes</p>

@@ -82,4 +82,4 @@ Layout.propTypes = {
   children: PropTypes.node.isRequired,
 }
 
-export { Layout, shortcodes, BlockQuote }
+export { Layout, Ppy6, BlockQuote, shortcodes }

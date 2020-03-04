@@ -5,8 +5,9 @@ import { Layout, shortcodes, BlockQuote } from "./layout"
 
 // https://www.gatsbyjs.org/docs/linking-between-pages/
 
+
 export default ({ data, pageContext }) => (
-  <MDXProvider components={(shortcodes, { blockquote: BlockQuote })}>
+  <MDXProvider components={{...shortcodes, blockquote: BlockQuote }}>
     <Layout title={pageContext.groupname}>
     {data.allAirtable.edges.map(({ node }, index) => (
       <p><Link to={`/${pageContext.groupname}/${node.data.pagename}`}>{node.data.title}</Link></p>

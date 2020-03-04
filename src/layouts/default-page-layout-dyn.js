@@ -1,23 +1,22 @@
-import { graphql } from "gatsby"
+import { graphql, Link } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Layout, shortcodes, BlockQuote } from "./layout"
-
 
 export default ({ data, pageContext }) => {
   const rowData = data.mdx.parent.parent.data
   const imageNodes = data.allFile.edges
   return (
-    <MDXProvider components={(shortcodes, { blockquote: BlockQuote })}>
+    <MDXProvider components={{...shortcodes, blockquote: BlockQuote}}>
       <Layout title={rowData.title} backlinkto={`/${rowData.group}`}>
-        <MDXRenderer attachments={attachments} imageNodes={imageNodes}>{data.mdx.body}</MDXRenderer>
+        <MDXRenderer attachments={pageContext.attachments} imageNodes={imageNodes}>{data.mdx.body}</MDXRenderer>
       </Layout>
     </MDXProvider>
   )
 }
 
 export const pageQuery = graphql`
-  query GetOneBlog($id: String, $attachment_urls: [String]) {
+  query GetOneBlog($id: String!, $attachment_urls: [String]!) {
     mdx(id: { eq: $id }) {
       body
       parent {

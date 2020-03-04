@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, shortcodes, BlockQuote } from "../layouts/layout";
-import { graphql } from 'gatsby'
+import { graphql, Link } from 'gatsby'
 import { MDXProvider } from "@mdx-js/react";
 import { MDXRenderer } from "gatsby-plugin-mdx";
+import AirtableImg from "../components/airtable-img"
+
 
 export default ({ data }) => {
   const nd = data.allMdx.edges[0].node
-  return <MDXProvider components={(shortcodes, { blockquote: BlockQuote })}>
+  return <MDXProvider components={{...shortcodes, blockquote: BlockQuote }}>
     <Layout title={nd.parent.parent.data.title}>
       <MDXRenderer>{nd.body}</MDXRenderer>
     </Layout>
   </MDXProvider>
 }
-
-
 
 export const query = graphql`
 query GetLatestBlog {

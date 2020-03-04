@@ -1,16 +1,15 @@
-import { graphql } from "gatsby"
+import { graphql, Link } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Layout, shortcodes, BlockQuote } from "./layout"
 
-const remark = require('remark');
+// const remark = require('remark');
 // const mdx = require('remark-mdx');
 // const mdxMetadata = require('remark-mdx-metadata');
 
-
 export default ({ data, pageContext }) => {
   return (
-    <MDXProvider components={(shortcodes, { blockquote: BlockQuote })}>
+    <MDXProvider components={{...shortcodes, blockquote: BlockQuote }}>
       <Layout>
         <MDXRenderer hello="world" your="love">{data.mdx.body}</MDXRenderer>
       </Layout>
