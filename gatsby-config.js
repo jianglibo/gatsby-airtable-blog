@@ -3,6 +3,8 @@ require("dotenv").config({
 })
 const logger = require("winston")
 
+const replaceRegex = /<AirtableImg\s+(.*?)\/>/g
+
 module.exports = {
   siteMetadata: {
     title: `Gatsby Default Starter`,
@@ -18,7 +20,7 @@ module.exports = {
           return node.internal.type === "AirtableField" && node.internal.mediaType === "text/markdown"
         },
         replaceFunc: (content, __node) => {
-          return content
+          return content.replace(replaceRegex, '<AirtableImg $1 attachments={props.attachments} imageNodes={props.imageNodes}/>')
         },
       },
     },

@@ -86,7 +86,7 @@ const createAirtablePages = async (graphql, actions, reporter) => {
 
   // Create blog post pages.
   const posts = result.data.allMdx.edges.filter(n => {
-    return n.node.fields && n.node.fields.slug
+    return n.node.fields && n.node.fields.recordId && n.node.fields.slug
   })
 
   const slugs = posts
