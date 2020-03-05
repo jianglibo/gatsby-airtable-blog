@@ -1,49 +1,11 @@
 const fs = require("fs")
 
-const printImageSharp = (node, actions, getNode) => {
-  if (node.internal.type === "ImageSharp") {
-    console.log("------------------------")
-    console.log(node)
-    if (node.parent) {
-      const parent = getNode(node.parent)
-      console.log("------------------------")
-      console.log(parent)
-      if (parent.parent) {
-        const pp = getNode(parent.parent)
-        console.log("------------------------")
-        console.log(pp)
-      }
-    }
-  }
-}
 
-const printAirtable = (node, actions, getNode) => {
-  if (node.internal.type === "Airtable") {
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    console.log(node)
-    console.log(node.data.attachments___NODE)
-    if (node.data.attachments___NODE) {
-      const an = getNode(node.data.attachments___NODE)
-      console.log("***")
-      console.log(an)
-    }
-    if (node.parent) {
-      const parent = getNode(node.parent)
-      console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-      console.log(parent)
-      if (parent.parent) {
-        const pp = getNode(parent.parent)
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-        console.log(pp)
-      }
-    }
-  }
-}
-
-const createAirtableNode = (airtableField, node, actions, getNode) => {
+const createAirtableNode = (replaceContent, node, actions, getNode) => {
   const { createNodeField } = actions
+  const airtableField = getNode(replaceContent.parent)
   const airtableRow = getNode(airtableField.parent)
-
+  console.log(`airtableRow: ${airtableRow.table}`)
   if (!["gatsby"].includes(airtableRow.table)) {
     return
   }
@@ -92,7 +54,7 @@ const createAirtablePages = async (graphql, actions, reporter) => {
   const path = require("path")
   const result = await graphql(`
     query {
-      allMdx(filter: { fields: { recordId: { regex: "/.+/" } } }) {
+      allMdx {
         edges {
           node {
             id

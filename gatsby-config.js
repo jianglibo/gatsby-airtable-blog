@@ -1,6 +1,7 @@
 require("dotenv").config({
   path: `.env`,
 })
+const logger = require("winston")
 
 module.exports = {
   siteMetadata: {
@@ -9,6 +10,18 @@ module.exports = {
     author: `@gatsbyjs`,
   },
   plugins: [
+    {
+      resolve: `gatsby-plugin-replace-content`,
+      options: {
+        needReplace: (node) => {
+          logger.info(`${node.internal.type}-${node.internal.mediaType}`)
+          return node.internal.type === "AirtableField" && node.internal.mediaType === "text/markdown"
+        },
+        replaceFunc: (content, __node) => {
+          return content
+        },
+      },
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -57,12 +70,12 @@ module.exports = {
         tables: [
           {
             baseId: process.env.AIRTABLE_BASE,
-            tableName: 'gatsby',
-            tableView: 'groupview',
-            mapping: { "content": `text/markdown`, "attachments": `fileNode` },
+            tableName: "gatsby",
+            tableView: "groupview",
+            mapping: { content: `text/markdown`, attachments: `fileNode` },
           },
-        ]
-      }
+        ],
+      },
     },
     {
       resolve: "gatsby-plugin-postcss",
@@ -70,17 +83,17 @@ module.exports = {
         postCssPlugins: [
           require(`tailwindcss`)(`./tailwind.config.js`),
           require(`autoprefixer`),
-          require(`cssnano`)
-        ]
-      }
+          require(`cssnano`),
+        ],
+      },
     },
     {
       resolve: `gatsby-plugin-purgecss`,
       options: {
         tailwind: true,
         printRejected: true,
-        purgeOnly: [`src/css/style.css`]
-      }
+        purgeOnly: [`src/css/style.css`],
+      },
     },
     {
       resolve: `gatsby-plugin-mdx`,
@@ -94,15 +107,14 @@ module.exports = {
             resolve: `gatsby-remark-katex`,
             options: {
               // Add any KaTeX options from https://github.com/KaTeX/KaTeX/blob/master/docs/options.md here
-              strict: `ignore`
-            }
-          }
+              strict: `ignore`,
+            },
+          },
         ],
         // remarkPlugins: [require("remark-math"), require("rehype-katex")],
         extensions: [`.mdx`, `.md`],
       },
     },
-    
   ],
 }
 

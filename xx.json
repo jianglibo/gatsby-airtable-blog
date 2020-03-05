@@ -1,0 +1,148 @@
+{
+    node: {
+      buildTime: '2020-03-05T07:00:42.000Z',
+      id: 'SiteBuildMetadata',
+      parent: null,
+      children: [],
+      internal: {
+        contentDigest: 'ac3ff48ef48a9d4289a6f530bf5c04af',
+        type: 'SiteBuildMetadata',
+        counter: 43,
+        owner: 'internal-data-bridge'
+      }
+    },
+    traceId: 'initial-sourceNodes',
+    parentSpan: Span {},
+    traceTags: { nodeId: 'SiteBuildMetadata', nodeType: 'SiteBuildMetadata' },
+    basePath: '',
+    pathPrefix: '',
+    boundActionCreators: {
+      deletePage: [Function (anonymous)],
+      createPage: [Function (anonymous)],
+      deleteNode: [Function (anonymous)],
+      deleteNodes: [Function (anonymous)],
+      createNode: [Function (anonymous)],
+      touchNode: [Function (anonymous)],
+      createNodeField: [Function (anonymous)],
+      createParentChildLink: [Function (anonymous)],
+      setWebpackConfig: [Function (anonymous)],
+      replaceWebpackConfig: [Function (anonymous)],
+      setBabelOptions: [Function (anonymous)],
+      setBabelPlugin: [Function (anonymous)],
+      setBabelPreset: [Function (anonymous)],
+      createJob: [Function (anonymous)],
+      createJobV2: [Function (anonymous)],
+      setJob: [Function (anonymous)],
+      endJob: [Function (anonymous)],
+      setPluginStatus: [Function (anonymous)],
+      createRedirect: [Function (anonymous)],
+      createPageDependency: [Function (anonymous)],
+      createFieldExtension: [Function (anonymous)],
+      createTypes: [Function (anonymous)],
+      createResolverContext: [Function (anonymous)],
+      addThirdPartySchema: [Function (anonymous)],
+      printTypeDefinitions: [Function (anonymous)]
+    },
+    actions: {
+      deletePage: [Function (anonymous)],
+      createPage: [Function (anonymous)],
+      deleteNode: [Function (anonymous)],
+      deleteNodes: [Function (anonymous)],
+      createNode: [Function (anonymous)],
+      touchNode: [Function (anonymous)],
+      createNodeField: [Function (anonymous)],
+      createParentChildLink: [Function (anonymous)],
+      setWebpackConfig: [Function (anonymous)],
+      replaceWebpackConfig: [Function (anonymous)],
+      setBabelOptions: [Function (anonymous)],
+      setBabelPlugin: [Function (anonymous)],
+      setBabelPreset: [Function (anonymous)],
+      createJob: [Function (anonymous)],
+      createJobV2: [Function (anonymous)],
+      setJob: [Function (anonymous)],
+      endJob: [Function (anonymous)],
+      setPluginStatus: [Function (anonymous)],
+      createRedirect: [Function (anonymous)],
+      createPageDependency: [Function (anonymous)],
+      createFieldExtension: [Function (anonymous)],
+      createTypes: [Function (anonymous)],
+      createResolverContext: [Function (anonymous)],
+      addThirdPartySchema: [Function (anonymous)],
+      printTypeDefinitions: [Function (anonymous)]
+    },
+    loadNodeContent: [Function (anonymous)],
+    store: {
+      dispatch: [Function (anonymous)],
+      subscribe: [Function: subscribe],
+      getState: [Function: getState],
+      replaceReducer: [Function: replaceReducer],
+      [Symbol(observable)]: [Function: observable]
+    },
+    emitter: { on: [Function: on], off: [Function: off], emit: [Function: emit] },
+    getCache: [Function: getCache],
+    getNodes: [Function: getNodes],
+    getNode: [Function: getNode],
+    getNodesByType: [Function: getNodesByType],
+    hasNodeChanged: [Function (anonymous)],
+    reporter: {
+      stripIndent: [Function (anonymous)],
+      format: <ref *1> [Function (anonymous)] Chalk {
+        constructor: [Function: Chalk],
+        supportsColor: [Object],
+        default: [Circular *1]
+      },
+      setVerbose: [Function: setVerbose],
+      setNoColor: [Function: setNoColor],
+      panic: [Function: panic],
+      panicOnBuild: [Function: panicOnBuild],
+      error: [Function: error],
+      uptime: [Function: uptime],
+      verbose: [Function: verbose],
+      success: [Function (anonymous)],
+      info: [Function (anonymous)],
+      warn: [Function (anonymous)],
+      log: [Function (anonymous)],
+      pendingActivity: [Function (anonymous)],
+      completeActivity: [Function: completeActivity],
+      activityTimer: [Function: activityTimer],
+      phantomActivity: [Function: phantomActivity],
+      createProgress: [Function: createProgress],
+      _setStage: [Function: _setStage]
+    },
+    getNodeAndSavePathDependency: [Function (anonymous)],
+    cache: Cache {
+      name: 'gatsby-plugin-replace-content',
+      store: { create: [Function (anonymous)] },
+      cache: {
+        _isCacheableValue: [Function (anonymous)],
+        getAndPassUp: [Function (anonymous)],
+        wrap: [Function (anonymous)],
+        set: [Function: setInMultipleCaches],
+        mset: [Function: setInMultipleCaches],
+        get: [Function: getFromHighestPriorityCache],
+        mget: [Function: getFromHighestPriorityCache],
+        del: [Function (anonymous)],
+        reset: [Function (anonymous)]
+      }
+    },
+    createNodeId: [Function: namespacedCreateNodeId],
+    createContentDigest: [Function: createContentDigest],
+    tracing: {
+      tracer: GlobalTracerDelegate {},
+      parentSpan: Span {},
+      startSpan: [Function: startSpan]
+    },
+    schema: {
+      buildObjectType: [Function: buildObjectType],
+      buildUnionType: [Function: buildUnionType],
+      buildInterfaceType: [Function: buildInterfaceType],
+      buildInputObjectType: [Function: buildInputObjectType],
+      buildEnumType: [Function: buildEnumType],
+      buildScalarType: [Function: buildScalarType]
+    }
+  }
+  {
+    plugins: [],
+    needReplace: [Function: needReplace],
+    replaceFunc: [Function: replaceFunc]
+  }

@@ -4,7 +4,7 @@ import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Layout, shortcodes, BlockQuote } from "./layout"
 
 export default ({ data, pageContext }) => {
-  const rowData = data.mdx.parent.parent.data
+  const rowData = data.mdx.parent.parent.parent.data
   const imageNodes = data.allFile.edges
   return (
     <MDXProvider components={{...shortcodes, blockquote: BlockQuote}}>
@@ -21,6 +21,7 @@ export const pageQuery = graphql`
       body
       parent {
         parent {
+          parent {
           ... on Airtable {
             id
             data {
@@ -31,6 +32,7 @@ export const pageQuery = graphql`
               layout
               excerpt
             }
+          }
           }
         }
       }
