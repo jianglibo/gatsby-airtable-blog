@@ -23,7 +23,7 @@ const Header = () => {
             className="text-gray-900 text-base no-underline hover:no-underline font-extrabold text-xl"
             to="/"
           >
-            Help Article
+          שלום
           </Link>
         </div>
         <div className="block lg:hidden pr-4">
@@ -75,6 +75,7 @@ const Header = () => {
               </div>
             </div>
           </div>
+          {/*
           <ul className="list-reset lg:flex justify-end items-center">
             <li className="mr-3 py-2 lg:py-0">
               <a
@@ -101,6 +102,7 @@ const Header = () => {
               </a>
             </li>
           </ul>
+          */}
         </div>
       </div>
     </nav>

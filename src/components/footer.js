@@ -8,7 +8,7 @@ const Footer = () => (
                 <div className="px-8">
                    <h3 className="font-bold text-gray-900">About</h3>
                    <p className="py-4 text-gray-600 text-sm">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel mi ut felis tempus commodo nec id erat. Suspendisse consectetur dapibus velit ut lacinia. 
+                      I indulged in GatsbyJs these days. This is a site built by Gatsby and Airtable.
                    </p>
                 </div>
              </div>

@@ -69,7 +69,9 @@ const Layout = ({ children, title, backlinkto }) => {
             <hr className="border-b border-gray-400" />
           </div>
           <main>{children}</main>
+          {/*
           <Usefull />
+          */}
         </div>
         <BackLink />
       </div>
