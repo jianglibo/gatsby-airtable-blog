@@ -9,6 +9,7 @@
 // You can require any js file, you just need to declare what you want to expose.
 
 const winston = require("winston")
+const path = require("path")
 
 const logger = winston.configure({
   level: "info",
@@ -49,21 +50,92 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   }
 }
 
+const createIndexPage = async (graphql, actions, reporter) => {
+  const { createPage } = actions
+  const result = await graphql(`
+    query {
+      allAirtable(filter: { data: { toppost: { eq: true } } }) {
+        edges {
+          node {
+            id
+            data {
+              position
+              attachments {
+                id
+              }
+            }
+          }
+        }
+      }
+    }
+  `)
+
+  if (result.errors) {
+    reporter.panicOnBuild('🚨  ERROR: Loading "createIndexPage" query')
+  }
+
+  const row = result.data.allAirtable.edges.sort((a, b) => {
+    return a.node.data.position > b.node.data.position
+  })[0]
+
+  let attachments = []
+  let attachment_urls = []
+
+  const attachments_id = row.node.data.attachments.id
+
+  if (attachments_id) {
+    let res = await graphql(`
+    query {
+      airtableField(id: { eq: "${attachments_id}" }) {
+        internal {
+          content
+        }
+      }
+    }
+  `)
+
+    if (res.errors) {
+      reporter.panicOnBuild(
+        '🚨  ERROR: Loading "createIndexPage airtableField" query'
+      )
+    }
+    console.log(res)
+    const attachments = JSON.parse(res.data.airtableField.internal.content)
+    const attachment_urls = attachments.map(a => a.url)
+
+    console.log(attachments)
+  }
+
+  createPage({
+    // This is the slug you created before
+    // (or `node.frontmatter.slug`)
+    path: "/",
+    // This component will wrap our MDX content
+    component: path.resolve(`./src/layouts/index.js`),
+    // You can use the values in this context in
+    // our page layout component
+    context: {
+      id: row.node.id,
+      attachment_urls,
+      attachments,
+    },
+  })
+}
+
 exports.createPages = async ({ graphql, actions, reporter }) => {
   await createAirtablePages(graphql, actions, reporter)
   await createFileMdxPages(graphql, actions, reporter)
+  await createIndexPage(graphql, actions, reporter)
 }
 
 /**
- * 
+ *
  */
-exports.onCreatePage = async (allParams) => {
+exports.onCreatePage = async allParams => {
   // console.log(allParams)
   // const { graphql, page, actions, reporter } = allParams
   // const { createPage, deletePage } = actions
-
   // // winston.error(page)
-
   // if (page.path === "/") {
   //   const result = await graphql(`
   //     query {
@@ -83,14 +155,11 @@ exports.onCreatePage = async (allParams) => {
   //       }
   //     }
   //   `)
-
   //   if (result.errors) {
   //     reporter.panicOnBuild('🚨  ERROR: Loading "onCreatePage index" query')
   //   }
-
   //   console.log(result)
   // }
-
   // deletePage(page)
   // createPage({
   //   ...page,

@@ -1,4 +1,5 @@
 const fs = require("fs")
+const path = require("path")
 
 
 const createAirtableNode = (replaceContent, node, actions, getNode) => {
@@ -51,7 +52,6 @@ const createAirtableNode = (replaceContent, node, actions, getNode) => {
 const createAirtablePages = async (graphql, actions, reporter) => {
   const { createPage } = actions
 
-  const path = require("path")
   const result = await graphql(`
     query {
       allMdx {
