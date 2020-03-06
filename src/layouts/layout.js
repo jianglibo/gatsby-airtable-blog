@@ -18,18 +18,9 @@ import AirtableImg from "../components/airtable-img"
 
 import "./layout.css"
 
-const Ppy6 = () => (
+const Ppy6 = ({children}) => (
   <p className="py-6">
-    👋 Welcome fellow{" "}
-    <a
-      className="text-purple-500 no-underline hover:underline"
-      href="https://www.tailwindcss.com"
-    >
-      Tailwind CSS
-    </a>{" "}
-    fan. This starter template provides a starting point to create your own
-    helpdesk / faq / knowledgebase articles using Tailwind CSS and vanilla
-    Javascript.
+    {children}
   </p>
 )
 

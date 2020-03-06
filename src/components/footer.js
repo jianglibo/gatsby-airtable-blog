@@ -17,7 +17,10 @@ const Footer = () => (
                    <h3 className="font-bold text-gray-900">Social</h3>
                    <ul className="list-reset items-center text-sm pt-3">
                       <li>
+                        <a href="https://twitter.com/gohugoio" className="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-1">@jianglibo</a>
+                         {/*
                          <a className="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-1" href="#">Add social links</a>
+                         */}
                       </li>
                    </ul>
                 </div>

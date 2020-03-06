@@ -1,4 +1,5 @@
 const { createFilePath } = require("gatsby-source-filesystem")
+const { logPosts } = require("./log-util")
 
 const createFileMdxNode = (node, actions, getNode) => {
   const { createNodeField } = actions
@@ -45,11 +46,7 @@ const createFileMdxPages = async (graphql, actions, reporter) => {
     nd => nd.node && nd.node.fields && !nd.node.fields.recordId
   )
 
-  const slugs = posts
-    .map(n => n.node.fields.slug)
-    .reduce((accumulator, currentValue) => `${accumulator},${currentValue}`)
-
-  console.log(`found mdx files: ${posts.length}\n[${slugs}]`)
+  logPosts(posts)
 
   // you'll call `createPage` for each result
   posts.forEach(({ node }, __index) => {

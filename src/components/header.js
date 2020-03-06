@@ -1,9 +1,9 @@
-import { Link } from "gatsby";
-import PropTypes from "prop-types";
-import React, { useState } from "react";
+import { Link } from "gatsby"
+import PropTypes from "prop-types"
+import React, { useState } from "react"
 
 const Header = () => {
-  const [isHidden, toggleHidden] = useState(true);
+  const [isHidden, toggleHidden] = useState(true)
   return (
     <nav
       onClick={() => toggleHidden(!isHidden)}
@@ -23,14 +23,14 @@ const Header = () => {
             className="text-gray-900 text-base no-underline hover:no-underline font-extrabold text-xl"
             to="/"
           >
-          שלום
+            שלום
           </Link>
         </div>
         <div className="block lg:hidden pr-4">
           <button
             onClick={e => {
-              toggleHidden(!isHidden);
-              e.stopPropagation();
+              toggleHidden(!isHidden)
+              e.stopPropagation()
             }}
             id="nav-toggle"
             className="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-900 hover:border-purple-500 appearance-none focus:outline-none"
@@ -106,7 +106,7 @@ const Header = () => {
         </div>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

@@ -15,8 +15,11 @@ const logger = winston.configure({
   format: winston.format.json(),
   defaultMeta: { service: "user-service" },
   transports: [
-    new winston.transports.File({ filename: "logs/error.log", level: "error" }),
-    new winston.transports.File({ filename: "logs/combined.log" }),
+    new winston.transports.File({
+      filename: "logs/error.json",
+      level: "error",
+    }),
+    new winston.transports.File({ filename: "logs/combined.json" }),
   ],
 })
 
@@ -49,4 +52,51 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
 exports.createPages = async ({ graphql, actions, reporter }) => {
   await createAirtablePages(graphql, actions, reporter)
   await createFileMdxPages(graphql, actions, reporter)
+}
+
+/**
+ * 
+ */
+exports.onCreatePage = async (allParams) => {
+  // console.log(allParams)
+  // const { graphql, page, actions, reporter } = allParams
+  // const { createPage, deletePage } = actions
+
+  // // winston.error(page)
+
+  // if (page.path === "/") {
+  //   const result = await graphql(`
+  //     query {
+  //       allAirtable(filter: { data: { toppost: { eq: true } } }, limit: 1) {
+  //         edges {
+  //           node {
+  //             data {
+  //               title
+  //               position
+  //               pagename
+  //               layout
+  //               group
+  //               excerpt
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   `)
+
+  //   if (result.errors) {
+  //     reporter.panicOnBuild('🚨  ERROR: Loading "onCreatePage index" query')
+  //   }
+
+  //   console.log(result)
+  // }
+
+  // deletePage(page)
+  // createPage({
+  //   ...page,
+  //   context: {
+  //     ...page.context,
+  //     house: `Gryffindor`,
+  //   },
+  // })
 }

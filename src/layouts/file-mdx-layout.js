@@ -3,25 +3,13 @@ import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Layout, shortcodes, BlockQuote } from "./layout"
 
-// const remark = require('remark');
-// const mdx = require('remark-mdx');
-// const mdxMetadata = require('remark-mdx-metadata');
 
 export default ({ data, pageContext }) => {
   return (
     <MDXProvider components={{...shortcodes, blockquote: BlockQuote }}>
-      <Layout>
+      <Layout title={data.mdx.frontmatter.title}>
         <MDXRenderer hello="world" your="love">{data.mdx.body}</MDXRenderer>
       </Layout>
-    <p>{data.mdx.body.toString()}</p>
-
-    {
-      remark()
-    .use(() => tree => {
-      console.log(tree)
-    })
-    .process(data.mdx.body).toString()
-    }
     </MDXProvider>
   )
 }
@@ -30,6 +18,10 @@ export const pageQuery = graphql`
   query GetOneFileMdx($id: String) {
     mdx(id: { eq: $id }) {
       body
+      frontmatter {
+        title
+        date(formatString: "MMMM DD, YYYY")
+      }
     }
   }
 `
