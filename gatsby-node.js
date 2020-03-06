@@ -11,7 +11,7 @@
 const winston = require("winston")
 const path = require("path")
 
-const logger = winston.configure({
+winston.configure({
   level: "info",
   format: winston.format.json(),
   defaultMeta: { service: "user-service" },
@@ -24,10 +24,14 @@ const logger = winston.configure({
   ],
 })
 
+const logger = winston;
+
 const { createAirtableNode, createAirtablePages } = require("./airtable-node")
 const { createFileMdxNode, createFileMdxPages } = require("./file-mdx-node")
 
-exports.onCreateNode = ({ node, actions, getNode }) => {
+exports.onCreateNode = onCreateNodeAllParams => {
+  logger.info("onCreateNode allParams")
+  const { node, actions, getNode } = onCreateNodeAllParams
   // you only want to operate on `Mdx` nodes. If you had content from a
   // remote CMS you could also check to see if the parent node was a `File` node here
   if (node.internal.type === "Mdx") {
@@ -122,16 +126,22 @@ const createIndexPage = async (graphql, actions, reporter) => {
   })
 }
 
-exports.createPages = async ({ graphql, actions, reporter }) => {
+exports.createPages = async createPagesAllParams => {
+  const { graphql, actions, reporter } = createPagesAllParams
   await createAirtablePages(graphql, actions, reporter)
   await createFileMdxPages(graphql, actions, reporter)
   await createIndexPage(graphql, actions, reporter)
 }
 
+exports.sourceNodes = sourceNodeAllParams => {
+  logger.info("sourceNodes allParams")
+}
+
 /**
  *
  */
-exports.onCreatePage = async allParams => {
+exports.onCreatePage = async onCreatePageAllParams => {
+  logger.info("onCreatePage allParams")
   // console.log(allParams)
   // const { graphql, page, actions, reporter } = allParams
   // const { createPage, deletePage } = actions
