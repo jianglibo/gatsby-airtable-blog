@@ -7,6 +7,39 @@ import "katex/dist/katex.min.css"
 
 # Hello, world!
 
+<p>mdx source:</p>
+---
+
+
+
+```jsx{numberLines: true}
+    ```markdown
+    ```
+    abc
+
+    eee
+    
+    {props.hello}
+    <p>{props.hello}</p>
+    
+    Lift($L$) can be determined by Lift Coefficient ($C_L$) like the following equation.
+    $$
+    L = \frac{1}{2} \rho v^2 S C_L
+    $$
+    
+    <div class="math math-display">
+      L = \frac{1}{2} \rho v^2 S C_L
+    </div>
+    
+    <div>{JSON.stringify(props)}</div>
+    
+    <p style="font-size: 80px;">abc</p>
+    
+    `var i = 5`
+    
+    > Alpha bravo charlie.
+```
+
 abc
 
 eee
@@ -34,9 +67,9 @@ $$
 `createFilePath`https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-source-filesystem
 
 `gatsby-plugin-page-creator` https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-page-creator
-```js
+```javascript{numberLines: true}
 // gatsby-config.js
-
+const v = "&gt;&lt;"
 module.exports = {
   plugins: [
     // You can have multiple instances of this plugin
@@ -47,7 +80,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-page-creator`,
       options: {
-        path: `${__dirname}/src/account/pages`,
+        path: `${__dirname}/src/account/pages`,// highlight-line
       },
     },
     {

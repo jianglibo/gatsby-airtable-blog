@@ -15,12 +15,31 @@ module.exports = {
     {
       resolve: `gatsby-plugin-replace-content`,
       options: {
-        needReplace: (node) => {
+        needReplace: node => {
           logger.info(`${node.internal.type}-${node.internal.mediaType}`)
-          return node.internal.type === "AirtableField" && node.internal.mediaType === "text/markdown"
+          return (
+            node.internal.type === "AirtableField" &&
+            node.internal.mediaType === "text/markdown"
+          )
         },
         replaceFunc: (content, __node) => {
-          return content.replace(replaceRegex, '<AirtableImg $1 attachments={props.attachments} imageNodes={props.imageNodes}/>')
+          let new_content = content
+          new_content = new_content.replace(
+            replaceRegex,
+            "<AirtableImg $1 attachments={props.attachments} imageNodes={props.imageNodes}/>"
+          )
+          let markdown_source = content.replace(
+            /(.*?)((\r?\n)|(\r\n?))/g,
+            "    $1$2"
+          )
+          return `${new_content}
+---
+mdx source of this page:
+---
+\`\`\`jsx{numberLines: true}
+${markdown_source}
+\`\`\`
+`
         },
       },
     },
@@ -111,6 +130,15 @@ module.exports = {
               // Add any KaTeX options from https://github.com/KaTeX/KaTeX/blob/master/docs/options.md here
               strict: `ignore`,
             },
+          },
+          {
+            resolve: `gatsby-remark-prismjs`,
+            classPrefix: "language-",
+            inlineCodeMarker: null,
+            aliases: {},
+            showLineNumbers: false,
+            noInlineHighlight: false,
+            escapeEntities: {},
           },
         ],
         // remarkPlugins: [require("remark-math"), require("rehype-katex")],
