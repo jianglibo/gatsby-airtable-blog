@@ -2,6 +2,7 @@ import { graphql, Link } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Layout, shortcodes, BlockQuote } from "./layout"
+import SEO from "../components/seo"
 
 export default ({ data, pageContext }) => {
   const rowData = data.mdx.parent.parent.parent.data
@@ -9,6 +10,7 @@ export default ({ data, pageContext }) => {
   return (
     <MDXProvider components={{ ...shortcodes, blockquote: BlockQuote }}>
       <Layout title={rowData.title} backlinkto={`/${rowData.group}`}>
+        <SEO title={rowData.title} />
         <MDXRenderer
           attachments={pageContext.attachments}
           imageNodes={imageNodes}

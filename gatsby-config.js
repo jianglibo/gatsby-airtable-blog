@@ -7,9 +7,9 @@ const replaceRegex = /<AirtableImg\s+(.*?)\/>/g
 
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    title: `A gatsby blog use airtable spreadsheet as backend.`,
+    description: `Gatsby can source nearly all kind of data, here is an example use Airtable.`,
+    author: `@jianglibo`,
   },
   plugins: [
     {
